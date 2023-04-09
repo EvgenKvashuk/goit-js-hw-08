@@ -1,15 +1,34 @@
-// Add imports above this line
-import { galleryItems } from './gallery-items';
-// Change code below this line
+import { galleryItems } from './gallery-items.js';
 
-console.log(galleryItems);
+const galleryRef = document.querySelector('.gallery');
 
-// Описаний в документації
-import SimpleLightbox from "simplelightbox";
-// Додатковий імпорт стилів
-import "simplelightbox/dist/simple-lightbox.min.css";
+const galeryPicture = createPictureCardsMarkup(galleryItems);
+function createPictureCardsMarkup (galleryItems) { 
+    return galleryItems.map(({preview, original, description}) => {
+        return `
+        <div class="gallery__item">
+  <a class="gallery__link" href="${original}">
+    <img
+      class="gallery__image"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
+    />
+  </a>
+</div>
+        `
+    }).join('');
+}
+galleryRef.insertAdjacentHTML('beforeend', galeryPicture );
 
-const galleryRef = document.querySelector('.gallery')
 
-console.log(galleryRef);
-console.log(SimpleLightbox);
+
+galleryRef.addEventListener('click', onGalleryRef);
+
+function onGalleryRef(evt) {
+    evt.preventDefault();
+    const isPictureSwatchEl = evt.target.classList.contains('gallery__image');
+    if (!isPictureSwatchEl) {
+        return;
+    }
+}
