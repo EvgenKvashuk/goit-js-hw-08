@@ -105,5 +105,5 @@ function populateTextarea() {
     const savedMessage = localStorage.getItem(LOCALSTORAGE_KEY);
     const parseObject = JSON.parse(savedMessage);
     refs.textarea.value = parseObject.message;
-    refs.form.elements.email = parseObject.message;
+    refs.form.elements.email = parseObject.email;
 };
