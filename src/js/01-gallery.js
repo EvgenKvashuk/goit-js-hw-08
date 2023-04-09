@@ -1,34 +1,55 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
+// Change code below this line
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
-const galleryRef = document.querySelector('.gallery');
 
-const galeryPicture = createPictureCardsMarkup(galleryItems);
-function createPictureCardsMarkup (galleryItems) { 
-    return galleryItems.map(({preview, original, description}) => {
-        return `
-        <div class="gallery__item">
-  <a class="gallery__link" href="${original}">
-    <img
-      class="gallery__image"
-      src="${preview}"
-      data-source="${original}"
-      alt="${description}"
-    />
-  </a>
-</div>
-        `
-    }).join('');
+const galleryMarkup = createGalleryCardMarkup(galleryItems);
+
+function createGalleryCardMarkup(galleryItem) {
+    return galleryItems
+        .map(({ preview, original, description }) => {
+            return `<div class="gallery__item">
+                <a class="gallery__link" href="${original}">
+                    <img
+                        class="gallery__image"
+                        src="${preview}"
+                        data-source="${original}"
+                        alt="${description}"
+                    />
+                </a>
+            </div>`;
+        })
+        .join("");
 }
-galleryRef.insertAdjacentHTML('beforeend', galeryPicture );
 
+const galleryEl = document.querySelector(".gallery");
 
+galleryEl.insertAdjacentHTML("afterbegin", galleryMarkup);
 
-galleryRef.addEventListener('click', onGalleryRef);
+galleryEl.addEventListener("click", onGalleryClick);
 
-function onGalleryRef(evt) {
-    evt.preventDefault();
-    const isPictureSwatchEl = evt.target.classList.contains('gallery__image');
-    if (!isPictureSwatchEl) {
+function onGalleryClick(event) {
+    event.preventDefault();
+    if (!event.target.classList.contains("gallery__image")) {
         return;
+    }
+
+    const instance = basicLightbox.create(`
+    <img src="${event.target.dataset.source}">
+`);
+
+    console.log(instance);
+
+    instance.show();
+
+    if (instance.show()) {
+        window.addEventListener("keydown", onKeyDown);
+
+        function onKeyDown(event) {
+            if (event.key === "Escape") {
+                instance.close();
+            }
+        }
     }
 }
