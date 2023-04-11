@@ -1,13 +1,9 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-
-// Add imports above this line
-
 import { galleryItems } from './gallery-items';
 
-// Change code below this line
 
-// Делаем разметку
+// Розмітка
 
 const galleryMarkup = createGalleryCardMarkup(galleryItems);
 function createGalleryCardMarkup(galleryItem) {
@@ -26,12 +22,12 @@ function createGalleryCardMarkup(galleryItem) {
     .join('');
 }
 
-// Рендерим в разметку
+// Рендер розмітки
 
 const galleryEl = document.querySelector('.gallery');
 galleryEl.insertAdjacentHTML('afterbegin', galleryMarkup);
 
-// Делегируем событие клика на div галерею
+// Делегування
 
 galleryEl.addEventListener('click', onGalleryClick);
 function onGalleryClick(event) {
