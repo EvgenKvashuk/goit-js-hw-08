@@ -1,63 +1,45 @@
 import throttle from 'lodash.throttle';
+
 const refs = {
   form: document.querySelector('.feedback-form'),
   email: document.querySelector('input'),
   message: document.querySelector('textarea'),
 };
+const LOCAL_STORAGE_KEY = 'feedback-form-state';
+let formData = {};
+const delayValey = 500;
+
+populateFormData();
 
 refs.form.addEventListener('submit', onFormSubmit);
-refs.email.addEventListener('input', throttle(onEmailInput, 500));
-refs.message.addEventListener('input', throttle(onMessageInput, 500));
+refs.form.addEventListener('input', throttle(onFormInput, delayValey));
 
-const LOCALE_STORAGE = 'feedback-form-state';
-const localeItem = {};
-
-// Form
-
-function onFormSubmit(e) {
-  e.preventDefault();
-  e.target.reset();
-  localStorage.removeItem(LOCALE_STORAGE);
-}
-
-// Message
-
-function onMessageInput(e) {
-  localeItem[e.target.name] = e.target.value;
-  localStorage.setItem(LOCALE_STORAGE, JSON.stringify(localeItem));
-}
-
-function userLocaleMessage() {
-  try {
-    const userMessageItem = JSON.parse(localStorage.getItem(LOCALE_STORAGE));
-    if (userMessageItem) {
-      refs.message.value = userMessageItem.message;
-    }
-  } catch (error) {
-    console.log(error.name);
-    console.log(error.message);
+function onFormSubmit(evt) {
+  evt.preventDefault();
+  if (refs.email.value === '' || refs.message.value === '') {
+    alert('Please fill the form!');
+  }
+  else {
+    evt.currentTarget.reset();
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    (formData = {});
   }
 }
 
-userLocaleMessage();
-
-// Email
-
-function onEmailInput(e) {
-  localeItem[e.target.name] = e.target.value;
-  localStorage.setItem(LOCALE_STORAGE, JSON.stringify(localeItem));
+function onFormInput(evt) {
+  formData[evt.target.name] = evt.target.value;
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
 }
 
-function userlocaleEmail() {
-  try {
-    const userEmailItem = JSON.parse(localStorage.getItem(LOCALE_STORAGE));
-    if (userEmailItem) {
-      refs.email.value = userEmailItem.email;
+function populateFormData() {
+  const localData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+
+  if (localData) {
+    if (localData.email) {
+      refs.email.value = localData.email;
     }
-  } catch (error) {
-    console.log(error.name);
-    console.log(error.message);
+    if (localData.message) {
+      refs.message.value = localData.message;
+    }
   }
 }
-
-userlocaleEmail();

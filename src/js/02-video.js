@@ -4,17 +4,19 @@ import throttle from 'lodash.throttle';
 // ======================================================================================================================================================
 const iframeRef = document.querySelector('iframe');
 const player = new Vimeo.Player(iframeRef);
+const timeForSave = 'videoplayer-current-time';
+const delayValey = 1000;
 // ======================================================================================================================================================
 player.setMuted(true);
 // ======================================================================================================================================================
 
 // додаємо слухач подій. data - js о'єкт
 const refreshPage = function (data) {
-    localStorage.setItem('videoplayer-current-time', data.seconds);
+    localStorage.setItem(timeForSave, data.seconds);
 };
 
 // слухач події оновлення часу (timeupdate) який спрацьовує з переодичністю 1 секунда
-player.on('timeupdate', throttle(refreshPage, 1000));
+player.on('timeupdate', throttle(refreshPage, delayValey));
 
 // зміна яка дорівнює округленим секундам які зберегли в локальне сховище
 const getSeconds = Math.round(localStorage.getItem('videoplayer-current-time'));

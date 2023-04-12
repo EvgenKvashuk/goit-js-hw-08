@@ -29,32 +29,32 @@ galleryEl.insertAdjacentHTML('afterbegin', galleryMarkup);
 
 // Делегування
 
-galleryEl.addEventListener('click', onGalleryClick);
-function onGalleryClick(event) {
-  event.preventDefault();
-  if (event.target.nodeName !== 'IMG') {
-    return;
-  }
-  // simpleLightbox
-  `<div class="gallery">
-    <a href="${event.target.getAttribute(
-      'href'
-    )}"><img src="${event.target.getAttribute(
-    'src'
-  )}" alt="${event.target.getAttribute('alt')}" /></a>
-    <a href="${event.target.getAttribute(
-      'href'
-    )}"><img src="${event.target.getAttribute(
-    'src'
-  )}" alt="${event.target.getAttribute('alt')}"/></a>
-</div>
-    `;
-}
-let gallery = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
-  showCounter: false,
-});
+// galleryEl.addEventListener('click', onGalleryClick);
+// function onGalleryClick(event) {
+//   event.preventDefault();
+//   if (event.target.nodeName !== 'IMG') {
+//     return;
+//   }
+//   // simpleLightbox
+//   `<div class="gallery">
+//     <a href="${event.target.getAttribute(
+//       'href'
+//     )}"><img src="${event.target.getAttribute(
+//     'src'
+//   )}" alt="${event.target.getAttribute('alt')}" /></a>
+//     <a href="${event.target.getAttribute(
+//       'href'
+//     )}"><img src="${event.target.getAttribute(
+//     'src'
+//   )}" alt="${event.target.getAttribute('alt')}"/></a>
+// </div>
+//     `;
+// }
+// let gallery = new SimpleLightbox('.gallery a', {
+//   captionsData: 'alt',
+//   captionDelay: 250,
+//   showCounter: false,
+// });
 
-gallery.on('show.simplelightbox');
+// gallery.on('show.simplelightbox');
 // console.log(galleryMarkup);
