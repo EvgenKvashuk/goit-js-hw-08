@@ -7,12 +7,12 @@ const refs = {
 };
 const LOCAL_STORAGE_KEY = 'feedback-form-state';
 let formData = {};
-const delayValey = 500;
+const DELAY_VALUE = 500;
 
 populateFormData();
 
 refs.form.addEventListener('submit', onFormSubmit);
-refs.form.addEventListener('input', throttle(onFormInput, delayValey));
+refs.form.addEventListener('input', throttle(onFormInput, DELAY_VALUE));
 
 function onFormSubmit(evt) {
   evt.preventDefault();

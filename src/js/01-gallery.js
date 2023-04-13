@@ -1,11 +1,9 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import { galleryItems } from './gallery-items';
+import { galleryItems } from "./gallery-items.js";
 
+// const galleryMarkup = createGalleryCardMarkup(galleryItems);
 
-// Розмітка
-
-const galleryMarkup = createGalleryCardMarkup(galleryItems);
 function createGalleryCardMarkup(galleryItem) {
   return galleryItems
     .map(({ preview, original, description }) => {
@@ -13,48 +11,43 @@ function createGalleryCardMarkup(galleryItem) {
                 <a class="gallery__link" href="${original}">
                     <img
                         class="gallery__image"
-                        src="${original}"
+                        src="${preview}"
+                        data-source="${original}"
                         alt="${description}"
                     />
                 </a>
             </div>`;
     })
-    .join('');
+    .join("");
 }
 
-// Рендер розмітки
+const galleryEl = document.querySelector(".gallery");
 
-const galleryEl = document.querySelector('.gallery');
-galleryEl.insertAdjacentHTML('afterbegin', galleryMarkup);
+galleryEl.insertAdjacentHTML("afterbegin", galleryMarkup);
 
-// Делегування
+galleryEl.addEventListener("click", onGalleryClick);
 
-// galleryEl.addEventListener('click', onGalleryClick);
-// function onGalleryClick(event) {
-//   event.preventDefault();
-//   if (event.target.nodeName !== 'IMG') {
-//     return;
-//   }
-//   // simpleLightbox
-//   `<div class="gallery">
-//     <a href="${event.target.getAttribute(
-//       'href'
-//     )}"><img src="${event.target.getAttribute(
-//     'src'
-//   )}" alt="${event.target.getAttribute('alt')}" /></a>
-//     <a href="${event.target.getAttribute(
-//       'href'
-//     )}"><img src="${event.target.getAttribute(
-//     'src'
-//   )}" alt="${event.target.getAttribute('alt')}"/></a>
-// </div>
-//     `;
-// }
-// let gallery = new SimpleLightbox('.gallery a', {
-//   captionsData: 'alt',
-//   captionDelay: 250,
-//   showCounter: false,
-// });
+function onGalleryClick(event) {
+  event.preventDefault();
+  if (!event.target.classList.contains("gallery__image")) {
+    return;
+  }
 
-// gallery.on('show.simplelightbox');
-// console.log(galleryMarkup);
+  const instance = basicLightbox.create(`
+    <img src="${event.target.dataset.source}">
+`);
+
+  console.log(instance);
+
+  instance.show();
+
+  if (instance.show()) {
+    window.addEventListener("keydown", onKeyDown);
+
+    function onKeyDown(event) {
+      if (event.key === "Escape") {
+        instance.close();
+      }
+    }
+  }
+}
